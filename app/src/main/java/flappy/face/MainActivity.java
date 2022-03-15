@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -30,5 +31,22 @@ public class MainActivity extends AppCompatActivity {
         m_rl_game_over = findViewById(R.id.game_over_screen);
         m_btn_start = findViewById(R.id.btn_start);
         m_gv = findViewById(R.id.game_view);
+        m_btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_gv.setStart(true);
+                m_txt_score.setVisibility(v.VISIBLE);
+                m_btn_start.setVisibility(v.INVISIBLE);
+            }
+        });
+        m_rl_game_over.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m_btn_start.setVisibility(v.VISIBLE);
+                m_rl_game_over.setVisibility(v.INVISIBLE);
+                m_gv.setStart(false);
+                m_gv.reset();
+            }
+        });
     }
 }

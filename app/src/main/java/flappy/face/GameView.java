@@ -1,6 +1,7 @@
 package flappy.face;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,13 +22,18 @@ public class GameView extends View {
     private Runnable m_runnable;
     private ArrayList<Pipe> m_pipes;
     private int mi_sumPipes, mi_distance;
-    private int mi_score, mi_best_score;
+    private int mi_score, mi_best_score = 0;
     private boolean mb_start;
+    private Context m_context;
 
     public GameView(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
+        m_context = context;
+        SharedPreferences sp = context.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        if (sp != null) {
+            mi_best_score = sp.getInt("BestScore", 0);
+        }
         mi_score = 0;
-        mi_best_score = 0;
         mb_start  = false;
         initBird();
         initPipe();
@@ -74,10 +80,26 @@ public class GameView extends View {
         if (mb_start) {
             m_bird.draw(canvas);
             for (int i = 0; i < mi_sumPipes; i++) {
+                if (m_bird.getRect().intersect(m_pipes.get(i).getRect())
+                        || m_bird.getY()-m_bird.getHeight() < 0
+                        || m_bird.getY() > Configs.SCREEN_HEIGHT) {
+                    Pipe.mi_speed = 0;
+                    MainActivity.m_txt_score_over.setText(MainActivity.m_txt_score.getText());
+                    MainActivity.m_txt_best_score.setText("Best: "+mi_best_score);
+                    MainActivity.m_txt_score.setVisibility(INVISIBLE);
+                    MainActivity.m_rl_game_over.setVisibility(VISIBLE);
+                }
                 if (m_bird.getX()+m_bird.getWidth() > m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2
                         && m_bird.getX()+m_bird.getWidth() <= m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2+Pipe.mi_speed
                         && i < mi_sumPipes/2) {
                     mi_score++;
+                    if (mi_score > mi_best_score) {
+                        mi_best_score = mi_score;
+                        SharedPreferences sp = m_context.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt("bestScore", mi_best_score);
+                        editor.apply();
+                    }
                     MainActivity.m_txt_score.setText(""+mi_score);
                 }
                 if(m_pipes.get(i).getX() < -m_pipes.get(i).getWidth()) {
@@ -90,6 +112,11 @@ public class GameView extends View {
                 }
                 m_pipes.get(i).draw(canvas);
             }
+        } else {
+            if (m_bird.getY() > Configs.SCREEN_HEIGHT/2){
+                m_bird.setDrop(-15*Configs.SCREEN_HEIGHT/1920);
+            }
+            m_bird.draw(canvas);
         }
         m_handler.postDelayed(m_runnable, 10);
     }
@@ -100,5 +127,20 @@ public class GameView extends View {
             m_bird.setDrop(-15);
         }
         return true;
+    }
+
+    public boolean isStarted() {
+        return mb_start;
+    }
+
+    public void setStart(boolean p_start) {
+        mb_start = p_start;
+    }
+
+    public void reset() {
+        MainActivity.m_txt_score.setText("0");
+        mi_score = 0;
+        initPipe();
+        initBird();
     }
 }
