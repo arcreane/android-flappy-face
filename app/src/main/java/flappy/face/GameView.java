@@ -21,9 +21,10 @@ public class GameView extends View {
     private Runnable m_runnable;
     private ArrayList<Pipe> m_pipes;
     private int mi_sumPipes, mi_distance;
-
+    private int mi_score;
     public GameView(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
+        mi_score = 0;
         initBird();
         initPipe();
         m_handler = new Handler();
@@ -68,6 +69,12 @@ public class GameView extends View {
         super.draw(canvas);
         m_bird.draw(canvas);
         for (int i = 0; i < mi_sumPipes; i++) {
+            if (m_bird.getX()+m_bird.getWidth() > m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2
+                && m_bird.getX()+m_bird.getWidth() <= m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2+Pipe.mi_speed
+                && i < mi_sumPipes/2) {
+                mi_score++;
+                MainActivity.m_txt_score.setText(""+mi_score);
+            }
             if(m_pipes.get(i).getX() < -m_pipes.get(i).getWidth()) {
                 m_pipes.get(i).setX(Configs.SCREEN_WIDTH);
                 if (i < mi_sumPipes/2) {

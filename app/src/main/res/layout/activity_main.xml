@@ -7,4 +7,13 @@
     <flappy.face.GameView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/txt_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#002247"
+        android:textSize="50sp"
+        android:text="0"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
 </RelativeLayout>
