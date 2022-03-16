@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -25,6 +29,10 @@ public class GameView extends View {
     private int mi_score, mi_best_score = 0;
     private boolean mb_start;
     private Context m_context;
+    private int mi_sound_jump;
+    private float mf_volume;
+    private boolean mb_loaded_sound;
+    private SoundPool m_soundPool;
 
     public GameView(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
@@ -44,6 +52,22 @@ public class GameView extends View {
                 invalidate();
             }
         };
+        if (Build.VERSION.SDK_INT >= 21) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+            SoundPool.Builder builder = new SoundPool.Builder();
+            builder.setAudioAttributes(audioAttributes).setMaxStreams(5);
+            m_soundPool = builder.build();
+        } else {
+            m_soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        }
+        m_soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                mb_loaded_sound = true;
+            }
+        });
+        mi_sound_jump = m_soundPool.load(context, R.raw.jump_02, 1);
+
     }
 
     private void initPipe() {
@@ -125,6 +149,9 @@ public class GameView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             m_bird.setDrop(-15);
+            if (mb_loaded_sound) {
+                int stream_id = m_soundPool.play(mi_sound_jump, (float)0.5, (float)0.5, 1, 0, 1f);
+            }
         }
         return true;
     }

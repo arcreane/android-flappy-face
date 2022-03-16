@@ -2,6 +2,7 @@ package flappy.face;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static RelativeLayout m_rl_game_over;
     public static Button m_btn_start;
     private GameView m_gv;
+    private MediaPlayer m_media_player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,5 +50,20 @@ public class MainActivity extends AppCompatActivity {
                 m_gv.reset();
             }
         });
+        m_media_player = MediaPlayer.create(this, R.raw.sillychipsong);
+        m_media_player.setLooping(true);
+        m_media_player.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        m_media_player.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        m_media_player.pause();
     }
 }
