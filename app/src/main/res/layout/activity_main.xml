@@ -28,20 +28,29 @@
         android:layout_centerInParent="true"
         android:background="#ffffff"
         android:textColor="#000000" />
+    <Button
+        android:id="@+id/btn_media"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change your player"
+        android:padding="5dp"
+        android:background="#ffffff"
+        android:textColor="#000000" />
     <RelativeLayout
         android:id="@+id/game_over_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
     >
+
         <TextView
             android:id="@+id/txt_game_over"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Game over"
-            android:textSize="50sp"
             android:layout_centerInParent="true"
-            android:textColor="#ff00" />
+            android:text="Game over"
+            android:textColor="#ff00"
+            android:textSize="50sp" />
         <TextView
             android:id="@+id/txt_score_over"
             android:layout_width="wrap_content"
