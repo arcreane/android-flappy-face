@@ -18,8 +18,6 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-import java.util.logging.LogRecord;
-
 public class GameView extends View {
     private Bird m_bird;
     private Handler m_handler;
@@ -67,7 +65,6 @@ public class GameView extends View {
             }
         });
         mi_sound_jump = m_soundPool.load(context, R.raw.jump_02, 1);
-
     }
 
     private void initPipe() {
@@ -99,9 +96,18 @@ public class GameView extends View {
         m_bird.setArrsBms(arrBms);
     }
 
+    private void triggerFakeNotif() {
+        if (Math.random() < 0.001) {
+            MainActivity.m_fake_notification.setVisibility(VISIBLE);
+            MainActivity.m_fake_notification.setHeight(Configs.SCREEN_HEIGHT/2);
+            MainActivity.m_fake_notification.setText("Lorem ipsum dolor sit amet");
+        }
+    }
+
     public void draw(Canvas canvas){
         super.draw(canvas);
         if (mb_start) {
+            triggerFakeNotif();
             m_bird.draw(canvas);
             for (int i = 0; i < mi_sumPipes; i++) {
                 if (m_bird.getRect().intersect(m_pipes.get(i).getRect())
@@ -112,6 +118,7 @@ public class GameView extends View {
                     MainActivity.m_txt_best_score.setText("Best: "+mi_best_score);
                     MainActivity.m_txt_score.setVisibility(INVISIBLE);
                     MainActivity.m_rl_game_over.setVisibility(VISIBLE);
+                    MainActivity.m_fake_notification.setHeight(0);
                 }
                 if (m_bird.getX()+m_bird.getWidth() > m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2
                         && m_bird.getX()+m_bird.getWidth() <= m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2+Pipe.mi_speed

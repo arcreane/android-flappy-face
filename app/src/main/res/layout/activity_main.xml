@@ -10,6 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <TextView
+        android:id="@+id/fake_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:translationZ="3dp"
+        android:paddingVertical="20dp"
+        android:visibility="invisible"
+        />
+    <TextView
         android:visibility="invisible"
         android:id="@+id/txt_score"
         android:layout_width="wrap_content"

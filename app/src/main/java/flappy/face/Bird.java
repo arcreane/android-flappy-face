@@ -26,7 +26,6 @@ public class Bird extends BaseObject {
     private void drop() {
         mf_drop += 0.6;
         mf_y += mf_drop;
-
     }
 
     public ArrayList<Bitmap> getArrsBms() {
