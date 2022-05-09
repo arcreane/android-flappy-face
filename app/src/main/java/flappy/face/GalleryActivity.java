@@ -66,7 +66,8 @@ public class GalleryActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             activityResultLauncher.launch(intent);
-        } else {
+        }
+        else {
             Toast.makeText(GalleryActivity.this, "There is no app that support this action",
                     Toast.LENGTH_SHORT).show();
         }
