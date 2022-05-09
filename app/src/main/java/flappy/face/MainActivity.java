@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     public static TextView m_txt_score, m_txt_best_score, m_txt_score_over, m_fake_notification;
     public static RelativeLayout m_rl_game_over;
-    public static Button m_btn_start;
+    public static Button m_btn_start, m_btn_media;
     private GameView m_gv;
     private MediaPlayer m_media_player;
     private Handler m_handler = new Handler();
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         m_fake_notification = findViewById(R.id.fake_notification);
         m_rl_game_over = findViewById(R.id.game_over_screen);
         m_btn_start = findViewById(R.id.btn_start);
+        m_btn_media = findViewById(R.id.btn_media);
         m_gv = findViewById(R.id.game_view);
 
         m_btn_start.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
                 m_rl_game_over.setVisibility(v.INVISIBLE);
                 m_gv.setStart(false);
                 m_gv.reset();
+            }
+        });
+        m_btn_media.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(MainActivity.this, GalleryActivity.class);
+                startActivity(galleryIntent);
             }
         });
 
