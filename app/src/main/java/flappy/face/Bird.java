@@ -23,6 +23,7 @@ public class Bird extends BaseObject {
         canvas.drawBitmap(this.getBm(), mf_x, mf_y, null);
     }
 
+    //Generate gravity to make bird drop
     private void drop() {
         mf_drop += 0.6;
         mf_y += mf_drop;
@@ -32,6 +33,7 @@ public class Bird extends BaseObject {
         return m_arrsBms;
     }
 
+    //Set images to animate the bird
     public void setArrsBms(ArrayList<Bitmap> p_arrsBms) {
         m_arrsBms = p_arrsBms;
         for (int i = 0; i < p_arrsBms.size(); i++) {

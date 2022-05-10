@@ -110,6 +110,7 @@ public class GameView extends View {
             triggerFakeNotif();
             m_bird.draw(canvas);
             for (int i = 0; i < mi_sumPipes; i++) {
+                //Check game over event, if bird hit a pipe, game over
                 if (m_bird.getRect().intersect(m_pipes.get(i).getRect())
                         || m_bird.getY()-m_bird.getHeight() < 0
                         || m_bird.getY() > Configs.SCREEN_HEIGHT) {
@@ -120,6 +121,7 @@ public class GameView extends View {
                     MainActivity.m_rl_game_over.setVisibility(VISIBLE);
                     MainActivity.m_fake_notification.setHeight(0);
                 }
+                //Condition to increment score and high score
                 if (m_bird.getX()+m_bird.getWidth() > m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2
                         && m_bird.getX()+m_bird.getWidth() <= m_pipes.get(i).getX()+m_pipes.get(i).getWidth()/2+Pipe.mi_speed
                         && i < mi_sumPipes/2) {
@@ -133,6 +135,7 @@ public class GameView extends View {
                     }
                     MainActivity.m_txt_score.setText(""+mi_score);
                 }
+                //Generate pipes
                 if(m_pipes.get(i).getX() < -m_pipes.get(i).getWidth()) {
                     m_pipes.get(i).setX(Configs.SCREEN_WIDTH);
                     if (i < mi_sumPipes/2) {
@@ -152,6 +155,7 @@ public class GameView extends View {
         m_handler.postDelayed(m_runnable, 10);
     }
 
+    //When click, play a sound and bird jump
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {

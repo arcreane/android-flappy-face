@@ -18,6 +18,7 @@ public class Pipe extends BaseObject {
         canvas.drawBitmap(m_bm, mf_x, mf_y, null);
     }
 
+    //Randomize gap for pipes
     public void randomY() {
         Random r = new Random();
         mf_y = r.nextInt((0+mi_height/4)+1)-mi_height/4;

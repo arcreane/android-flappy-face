@@ -29,6 +29,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     ActivityResultLauncher activityResultLauncher;
     @Override
+    //Show the activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
@@ -62,6 +63,7 @@ public class GalleryActivity extends AppCompatActivity {
         });
     }
 
+    //Open camera
     private void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -73,12 +75,14 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
+    //Open gallery
     private void imageSelector() {
         Intent selector = new Intent(Intent.ACTION_GET_CONTENT);
         selector.setType("image/*");
         startActivityForResult(Intent.createChooser(selector, "Select Picture"), SELECT_PICTURE);
     }
 
+    //Show selected image or taken photo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

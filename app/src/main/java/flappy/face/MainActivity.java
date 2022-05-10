@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private Handler m_handler = new Handler();
     private Runnable runnable;
 
+    /*
+        SensorManager give acces to the sensor of the dive
+        Will be usefull to detect device shake
+    */
     private SensorManager mSensorManager;
     private float mAccel;
     private float mAccelCurrent;
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         Configs.SCREEN_WIDTH = dm.widthPixels;
         Configs.SCREEN_HEIGHT = dm.heightPixels;
         setContentView(R.layout.activity_main);
+
+        //Get all my main activity elements and save them in variables
         m_txt_score = findViewById(R.id.txt_score);
         m_txt_best_score = findViewById(R.id.txt_best_over);
         m_txt_score_over = findViewById(R.id.txt_score_over);
@@ -68,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 m_gv.reset();
             }
         });
+
+        //When clicked, goes to gallery activity where we can select a new player model
         m_btn_media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Background music
         m_media_player = MediaPlayer.create(this, R.raw.sillychipsong);
         m_media_player.setLooping(true);
         m_media_player.start();
@@ -88,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         mAccelLast = SensorManager.GRAVITY_EARTH;
     }
 
-
+    //Detect device shaking event
     private final SensorEventListener mSensorListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
