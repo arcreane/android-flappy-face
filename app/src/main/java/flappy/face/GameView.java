@@ -69,7 +69,7 @@ public class GameView extends View {
 
     private void initPipe() {
         mi_sumPipes = 6;
-        mi_distance = 300*Configs.SCREEN_HEIGHT/1920;
+        mi_distance = 400*Configs.SCREEN_HEIGHT/1920;
         m_pipes = new ArrayList<>();
         for (int i = 0; i < mi_sumPipes; i++) {
             if (i < mi_sumPipes/2) {
@@ -99,7 +99,7 @@ public class GameView extends View {
     private void triggerFakeNotif() {
         if (Math.random() < 0.001) {
             MainActivity.m_fake_notification.setVisibility(VISIBLE);
-            MainActivity.m_fake_notification.setHeight(Configs.SCREEN_HEIGHT/2);
+            MainActivity.m_fake_notification.setHeight((int) (Configs.SCREEN_HEIGHT/3));
             MainActivity.m_fake_notification.setText("Lorem ipsum dolor sit amet");
         }
     }
