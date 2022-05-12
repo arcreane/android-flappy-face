@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,33 +17,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
 
     int SELECT_PICTURE = 200;
 
-    Button gallery, takephoto;
+    Button gallery, takephoto, valid;
     ImageView selectedImage;
+    Bitmap bitmap=null;
 
     ActivityResultLauncher activityResultLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                    bitmap = (Bitmap) result.getData().getExtras().get("data");
                     selectedImage.setImageBitmap(bitmap);
                 }
             }
         });
-
+        valid = findViewById(R.id.valid);
         gallery = findViewById(R.id.button_gallery);
         takephoto = findViewById(R.id.button_camera);
         selectedImage = findViewById(R.id.selected_image);
@@ -60,6 +64,25 @@ public class GalleryActivity extends AppCompatActivity {
                 takePhoto();
             }
         });
+
+        valid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validPhoto();
+            }
+        });
+    }
+
+    private void validPhoto() {
+        if(bitmap!=null) {
+            ArrayList<Bitmap> arrBms = new ArrayList<>();
+            arrBms.add(bitmap);
+            arrBms.add(bitmap);
+            Intent intent = new Intent();
+            intent.putExtra("DATA", arrBms);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     private void takePhoto() {
@@ -87,6 +110,11 @@ public class GalleryActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
                     selectedImage.setImageURI(selectedImageUri);
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

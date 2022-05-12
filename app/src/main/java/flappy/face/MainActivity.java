@@ -1,8 +1,13 @@
 package flappy.face;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,12 +16,18 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
         m_btn_media = findViewById(R.id.btn_media);
         m_gv = findViewById(R.id.game_view);
 
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ArrayList<Bitmap> arrBms = (ArrayList<Bitmap>) result.getData().getExtras().get("DATA");
+                    m_gv.getM_bird().setArrsBms(arrBms);
+                }
+            }
+        });
+
         m_btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +92,15 @@ public class MainActivity extends AppCompatActivity {
         m_btn_media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent galleryIntent = new Intent(MainActivity.this, GalleryActivity.class);
-                startActivity(galleryIntent);
+                if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+                    activityResultLauncher.launch(galleryIntent);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "There is no app that support this action",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
