@@ -181,4 +181,8 @@ public class GameView extends View {
         initPipe();
         initBird();
     }
+
+    public Bird getM_bird() {
+        return m_bird;
+    }
 }
