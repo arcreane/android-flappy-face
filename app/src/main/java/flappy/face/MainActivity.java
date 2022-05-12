@@ -24,9 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -84,12 +81,14 @@ public class MainActivity extends AppCompatActivity {
                 m_gv.setStart(true);
                 m_txt_score.setVisibility(v.VISIBLE);
                 m_btn_start.setVisibility(v.INVISIBLE);
+                m_btn_media.setVisibility(v.INVISIBLE);
             }
         });
         m_rl_game_over.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 m_btn_start.setVisibility(v.VISIBLE);
+                m_btn_media.setVisibility(v.VISIBLE);
                 m_rl_game_over.setVisibility(v.INVISIBLE);
                 m_gv.setStart(false);
                 m_gv.reset();
