@@ -109,14 +109,14 @@ public class GalleryActivity extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
+                    useImage(selectedImageUri);
                     selectedImage.setImageURI(selectedImageUri);
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
+    }
+
+    private void useImage(Uri selectedImageUri) {
+        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
     }
 }
